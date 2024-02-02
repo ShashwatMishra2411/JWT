@@ -10,12 +10,12 @@ interface Response {
 
 export default function Home() {
   const [data, setData] = useState<Response[]>()
-  const [isAuth, setIsAuth] = useState<boolean>(false)
+  // const [isAuth, setIsAuth] = useState<boolean>(false)
   
     useEffect(()=>{
         axios.get("http://localhost:3000/login",{
             headers:{
-              authorization: `${localStorage.getItem("jt_token")}`
+              authorization: `${localStorage.getItem("jwt_token")}`
             }
         }).then((res)=>{
             console.log(res.status)
