@@ -12,10 +12,10 @@ router.post("/signup", async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     console.log("use = ", user);
     if (user) {
-      res.send({ message: "User already exists" });
+      res.status(409).send({ message: "User already exists" });
     } else {
       const uc = await User.create({ username, password });
-      res.send(uc);
+      res.status(200).send(uc);
     }
     console.log(await User.find());
   } catch (e) {
@@ -61,7 +61,7 @@ router.get("/login", async (req, res) => {
   try {
     // req.user = username;
     const token = req.headers.authorization;
-    console.log(await Token.find());
+    console.log(await Token.find(), token);
 
     jwt.verify(
       token,
@@ -74,8 +74,6 @@ router.get("/login", async (req, res) => {
           res.send({ message: err.message });
           console.log(err.message);
         } else {
-          // console.log(await Token.find())
-          // console.log(decoded);
           if (decoded.flag) {
             req.user = decoded.username;
             const users = await User.find();
@@ -90,7 +88,7 @@ router.get("/login", async (req, res) => {
       }
     );
   } catch (e) {
-    res.send({ message: e.message });
+    res.status(400).send({ message: e.message });
   }
 });
 

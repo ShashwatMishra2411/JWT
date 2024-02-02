@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Navigate } from "react-router";
 import axios from "axios";
 import "./App.css";
 
 export default function Singup() {
   const [name, setName] = useState<string>()
   const [pass, setPass] = useState<string>()
+  const [isAuth, setIsAuth] = useState<boolean>(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -13,8 +15,11 @@ export default function Singup() {
       password:pass
     }).then((res)=>{
       console.log(res.data)
+      localStorage.setItem("jwt_token",res.data.message[0])
+      localStorage.setItem("refresh_token",res.data.message[1])
+      setIsAuth(true)
       setName("");
-      setPass("")
+      setPass("");
     }).catch((error)=>{
       console.log(error)
     })
@@ -23,6 +28,7 @@ export default function Singup() {
 
   return (
     <div>
+      {isAuth?<Navigate to="/home"/>:null}
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           Welcome,

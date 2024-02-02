@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Navigate } from "react-router";
 import axios from "axios";
 import "./App.css";
 
 export default function Singup() {
   const [name, setName] = useState<string>()
   const [pass, setPass] = useState<string>()
+  const [created, setCreated] = useState<boolean>(false); 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -13,16 +15,18 @@ export default function Singup() {
       password:pass
     }).then((res)=>{
       console.log(res.data)
+      setCreated(true)
       setName("");
       setPass("")
     }).catch((error)=>{
-      console.log(error)
+      alert(error.message)
     })
   }
 
 
   return (
     <div>
+      {created && <Navigate to="/signin" />}
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           Welcome,
