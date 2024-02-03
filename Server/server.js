@@ -10,6 +10,7 @@ mongoose.connect("mongodb+srv://Shashwatmishra2411:niceninja467@cluster0.fdscgv8
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('./dist'))
 
 app.use('/',userRoutes)
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import axios from "axios";
 import "./App.css";
@@ -6,8 +6,16 @@ import "./App.css";
 export default function Singup() {
   const [name, setName] = useState<string>()
   const [pass, setPass] = useState<string>()
-  const [created, setCreated] = useState<boolean>(false); 
+  const [created, setCreated] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean>(false)
 
+
+  useEffect(()=>{
+    const token = localStorage.getItem("jwt_token")
+    if(token){
+      setIsAuth(true)
+    }
+  },[])
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     axios.post("http://localhost:3000/signup",{
@@ -27,6 +35,7 @@ export default function Singup() {
   return (
     <div>
       {created && <Navigate to="/signin" />}
+      {isAuth?<Navigate to="/home"/>:null}
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           Welcome,
